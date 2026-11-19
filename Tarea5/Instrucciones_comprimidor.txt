@@ -1,0 +1,96 @@
+INSTRUCCIONES PARA COMPILAR Y EJECUTAR LOS PROGRAMAS GZIP
+
+Requisitos
+
+-   Ubuntu en WSL.
+-   Compilador g++.
+-   Biblioteca de desarrollo zlib.
+
+1. Instalar los requisitos
+
+Abre Ubuntu (WSL) y ejecuta:
+
+    sudo apt update
+    sudo apt install g++ build-essential zlib1g-dev
+
+2. Compilar el programa compresor
+
+Entra a la carpeta donde está Comprimir1.cpp:
+
+    cd "/mnt/c/Users/metal/Documents/tarea compresor/Comprimir1"
+
+Compila con:
+
+    g++ -std=c++17 -O2 Comprimir1.cpp -lz -o comprimir
+
+Si la compilación termina sin errores, se habrá creado el ejecutable
+“comprimir”.
+
+3. Ejecutar el programa compresor
+
+Para comprimir un archivo:
+
+    ./comprimir original.txt comprimido.gz
+
+El primer argumento es el archivo original y el segundo es el nombre del
+archivo GZIP que se generará.
+
+Ejemplo:
+
+    ./comprimir original.txt comprimido.gz
+
+4. Compilar el programa descompresor
+
+Entra a la carpeta donde está descomprimir.cpp:
+
+    cd "/mnt/c/Users/metal/Documents/tarea compresor/descomprimir"
+
+Compila con:
+
+    g++ -std=c++17 -O2 descomprimir.cpp -lz -o descomprimir
+
+Si la compilación termina sin errores, se habrá creado el ejecutable
+“descomprimir”.
+
+5. Copiar el archivo comprimido a la carpeta del descompresor
+
+Si el archivo comprimido se generó en la carpeta Comprimir1, ejecuta:
+
+    cp "../Comprimir1/comprimido.gz" .
+
+6. Ejecutar el programa descompresor
+
+Para recuperar el archivo original:
+
+    ./descomprimir comprimido.gz recuperado.txt
+
+El primer argumento es el archivo GZIP y el segundo es el nombre del
+archivo recuperado.
+
+7. Verificar que la recuperación sea correcta
+
+Compara el archivo original con el recuperado:
+
+    cmp "../Comprimir1/original.txt" recuperado.txt
+
+Si el comando cmp no muestra ningún mensaje, ambos archivos son
+idénticos byte por byte.
+
+También se puede comprobar el archivo GZIP con la herramienta del
+sistema:
+
+    gzip -t "../Comprimir1/comprimido.gz"
+
+Si no aparece ningún error, el archivo supera la comprobación de
+integridad de gzip.
+
+Notas
+
+-   La opción -lz enlaza el programa con la biblioteca zlib.
+-   Los programas construyen la cabecera y el trailer GZIP; zlib realiza
+    la compresión/descompresión DEFLATE y proporciona el cálculo CRC32.
+-   El descompresor entregado está preparado para el formato generado
+    por este compresor: cabecera fija sin campos opcionales y un único
+    flujo GZIP.
+-   Si las carpetas del proyecto están en otra ubicación, ajusta las
+    rutas de los comandos cd y cp.
